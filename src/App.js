@@ -1,25 +1,58 @@
-import logo from './logo.svg';
-import './App.css';
+import { Component, React } from "react"
+import { Tabs, InputItem } from 'antd-mobile'
+import mockData from './mockData/info'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.tabList = [
+      { title: 'Map', sub: '1' },
+      { title: 'List', sub: '2' },
+    ];
+    this.state = {
+      CTitle: '',
+      CText: ''
+    }
+    this.defaultData = {
+      textArr: mockData['text']
+    }
+  }
+
+  titleChange = (e) => {  
+    this.setState({CTitle: e}) 
+    this.tabList[0].title = e
+  }
+
+  initData = () => {
+    return this.defaultData.textArr.map((el, index) => {
+      return (<div>{this.defaultData.textArr[index].name}</div>)
+    })
+  }
+
+  render() {
+    return (
+      <div>
+        <InputItem
+            clear
+            placeholder="auto focus"
+            ref={el => this.autoFocusInst = el}
+          >标题</InputItem>
+          <InputItem
+            clear
+            placeholder="click the button below to focus"
+            ref={el => this.inputRef = el}
+          >标题</InputItem>
+
+        <Tabs tabs={this.tabList}
+          initialPage={0}
+          tabBarPosition="top"
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+          {this.initData()}
+        </Tabs>
+      </div>
+    );
+  }
 }
 
 export default App;
